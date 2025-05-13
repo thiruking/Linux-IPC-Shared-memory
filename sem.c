@@ -1,28 +1,4 @@
-# Linux-IPC-Shared-memory
-Ex06-Linux IPC-Shared-memory
-
-# AIM:
-To Write a C program that illustrates two processes communicating using shared memory.
-
-# DESIGN STEPS:
-
-### Step 1:
-
-Navigate to any Linux environment installed on the system or installed inside a virtual environment like virtual box/vmware or online linux JSLinux (https://bellard.org/jslinux/vm.html?url=alpine-x86.cfg&mem=192) or docker.
-
-### Step 2:
-
-Write the C Program using Linux Process API - Shared Memory
-
-### Step 3:
-
-Execute the C Program for the desired output. 
-
-# PROGRAM:
-
-## Write a C program that illustrates two processes communicating using shared memory.
-```
-
+//sem.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -95,51 +71,4 @@ int main() {
     } else {  // Parent process (Producer)
         char buffer[TEXT_SZ];
 
-        while (1) {
-            printf("Enter Some Text: ");
-            fgets(buffer, TEXT_SZ, stdin);
 
-            strncpy(shared_stuff->some_text, buffer, TEXT_SZ);
-            shared_stuff->written = 1;
-            printf(shared_stuff->some_text);
-
-            if (strncmp(buffer, "end", 3) == 0) {
-                break;
-            }
-
-            while (shared_stuff->written == 1) {
-                sleep(1); // Wait for consumer
-            }
-        }
-
-        // Wait for child process (consumer) to finish
-        wait(NULL);
-
-        // Detach and remove shared memory
-        if (shmdt(shared_memory) == -1) {
-            fprintf(stderr, "shmdt failed\n");
-            exit(EXIT_FAILURE);
-        }
-        
-        if (shmctl(shmid, IPC_RMID, 0) == -1) {
-            fprintf(stderr, "shmctl failed\n");
-            exit(EXIT_FAILURE);
-        }
-
-        exit(EXIT_SUCCESS);
-    }
-}
-
-
-```
-
-
-
-
-## OUTPUT
-
-![Alt text](img/01.png)
-![Alt text](img/02.png)
-
-# RESULT:
-The program is executed successfully.
